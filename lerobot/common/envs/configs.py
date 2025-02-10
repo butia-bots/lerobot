@@ -140,3 +140,34 @@ class XarmEnv(EnvConfig):
             "visualization_height": self.visualization_height,
             "max_episode_steps": self.episode_length,
         }
+
+@EnvConfig.register_subclass("fbot")
+@dataclass
+class FbotEnv(EnvConfig):
+    task: str = "FbotOpenCabinetDrawer-v0"
+    fps: int = 50
+    episode_length: int = 100
+    obs_type: str = "pixels"
+    render_mode: str = "rgb_array"
+    visualization_width: int = 265
+    visualization_height: int = 256
+    features: dict[str, PolicyFeature] = field(
+        default_factory=lambda: {
+            "action": ACTION,
+            "agent_pos": OBS_ROBOT,
+            "pixels": OBS_IMAGE,
+            "environment_state": OBS_ENV
+        }
+    )
+
+    def __post_init__(self):
+        if self.obs_type == 'pixels':
+            self.features['pixels'] = PolicyFeature(type=FeatureType.VISUAL, shape=(256, 256, 3))
+
+    @property
+    def gym_kwargs(self) -> dict:
+        return {
+            "robot_uids": "fetch",
+            "control_mode": "pd_ee_delta_pose",
+            "render_mode": "human"
+        }

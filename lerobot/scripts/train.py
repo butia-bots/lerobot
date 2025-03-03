@@ -67,6 +67,7 @@ def update_policy(
     lock=None,
 ) -> tuple[MetricsTracker, dict]:
     start_time = time.perf_counter()
+    batch = batch.to(torch.float16)
     device = get_device_from_parameters(policy)
     policy.train()
     with torch.autocast(device_type=device.type) if use_amp else nullcontext():

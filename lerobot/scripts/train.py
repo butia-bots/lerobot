@@ -142,7 +142,7 @@ def train(cfg: TrainPipelineConfig):
         cfg=cfg.policy,
         device=device,
         ds_meta=dataset.meta,
-    )
+    ).to(torch.float16)
 
     logging.info("Creating optimizer and scheduler")
     optimizer, lr_scheduler = make_optimizer_and_scheduler(cfg, policy)

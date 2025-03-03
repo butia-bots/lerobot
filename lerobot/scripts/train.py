@@ -13,6 +13,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from liger_kernel.transformers import apply_liger_kernel_to_gemma
+apply_liger_kernel_to_gemma()
 import logging
 import time
 from contextlib import nullcontext
